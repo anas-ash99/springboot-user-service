@@ -45,7 +45,8 @@ pipeline {
                        git clone ${MANIFEST_REPO}
                        cd ${MANIFEST_REPO_NAME}
                        powershell -Command "(Get-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml') -replace '${IMAGE_TAG}:.*', '${IMAGE_TAG}:${IMAGE_VERSION}' | Set-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml'"
-                       git push
+                       git commit -m "update tag image by Jenkins"
+                       git push -u origin main
                     """
                 }
             }
