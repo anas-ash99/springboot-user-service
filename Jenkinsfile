@@ -8,6 +8,8 @@ pipeline {
         MANIFEST_REPO = "https://github.com/anas-ash99/manifest"
         MANIFEST_REPO_NAME = "manifest"
         DEPLOYMENT_FILE_PATH = "overlys\\dev\\user-service"
+        GIT_USERNAME = "anas-ash99"
+        GIT_CREDENTIALS = credentials('Github-token')
     }
 
     stages {
@@ -21,9 +23,9 @@ pipeline {
 
                        cd ${MANIFEST_REPO_NAME}
 
-                       git push -u origin main --verbose
-                       https://github.com/anas-ash99/manifest.git
-                       git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/${MANIFEST_REPO_NAME}.git
+
+
+                       git push https://${GIT_CREDENTIALS_USR}:${GIT_CREDENTIALS_PS}@github.com/${GIT_USERNAME}/${MANIFEST_REPO_NAME}.git
                     """
                 }
             }
