@@ -16,7 +16,7 @@ pipeline {
         stage('Build App') {
             steps {
                 echo 'Building the app ...'
-                bat 'mvn clean package'
+                bat 'mvnw.cmd clean package'
             }
         }
 
