@@ -30,7 +30,7 @@ pipeline {
                 script {
                     docker.withRegistry('', DOCKER_HUB_CREDENTIALS) { // login into dockerhub
                         echo 'Pushing docker image...'
-                        // bat "docker push ${IMAGE_TAG}:${IMAGE_VERSION}"
+                        bat "docker push ${IMAGE_TAG}:${IMAGE_VERSION}"
                     }
                 }
             }
@@ -42,7 +42,7 @@ pipeline {
                 script {
                     // Apply Kubernetes manifests
                     bat """
-                       git pull
+                       git clone ${MANIFEST_REPO}
                        cd ${MANIFEST_REPO_NAME}
                        powershell -Command "(Get-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml') -replace '${IMAGE_TAG}:.*', '${IMAGE_TAG}:${IMAGE_VERSION}' | Set-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml'"
                        git push
