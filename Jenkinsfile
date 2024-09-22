@@ -10,6 +10,7 @@ pipeline {
         DEPLOYMENT_FILE_PATH = "overlys\\dev\\user-service"
     }
 
+    stages {
 
         stage('Update Kubernetes Manifest') {
             steps {
@@ -17,7 +18,6 @@ pipeline {
                 script {
                     // Apply Kubernetes manifests
                     bat """
-
                        git push -u origin main --verbose
                     """
                 }
