@@ -8,6 +8,8 @@ pipeline {
         MANIFEST_REPO = "https://github.com/anas-ash99/manifest"
         MANIFEST_REPO_NAME = "manifest"
         DEPLOYMENT_FILE_PATH = "overlys\\dev\\user-service"
+    }
+
 
         stage('Update Kubernetes Manifest') {
             steps {
