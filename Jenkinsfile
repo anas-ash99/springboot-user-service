@@ -42,7 +42,7 @@ pipeline {
                 script {
                     // Apply Kubernetes manifests
                     bat """
-                       git clone ${MANIFEST_REPO}
+                       git pull
                        cd ${MANIFEST_REPO_NAME}
                        powershell -Command "(Get-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml') -replace '${IMAGE_TAG}:.*', '${IMAGE_TAG}:${IMAGE_VERSION}' | Set-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml'"
                        git commit -m "update tag image by Jenkins"
