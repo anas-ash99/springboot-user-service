@@ -18,6 +18,9 @@ pipeline {
                 script {
                     // Apply Kubernetes manifests
                     bat """
+
+                       cd ${MANIFEST_REPO_NAME}
+
                        git push -u origin main --verbose
                     """
                 }
