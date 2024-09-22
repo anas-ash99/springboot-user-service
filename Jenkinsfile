@@ -22,6 +22,8 @@ pipeline {
                        cd ${MANIFEST_REPO_NAME}
 
                        git push -u origin main --verbose
+                       https://github.com/anas-ash99/manifest.git
+                       git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/${MANIFEST_REPO_NAME}.git
                     """
                 }
             }
