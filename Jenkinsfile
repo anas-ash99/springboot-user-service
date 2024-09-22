@@ -42,12 +42,12 @@ pipeline {
                 script {
                     // Apply Kubernetes manifests
                     bat """
-                       'git config --global user.email "anas.ash099@example.com"'
-                       'git config --global user.name "Anas Ashraf"'
+                       git config --global user.email "anas.ash099@example.com"
+                       git config --global user.name "Anas Ashraf"
                        git pull
                        cd ${MANIFEST_REPO_NAME}
                        powershell -Command "(Get-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml') -replace '${IMAGE_TAG}:.*', '${IMAGE_TAG}:${IMAGE_VERSION}' | Set-Content -Path '${DEPLOYMENT_FILE_PATH}\\deployment.yaml'"
-                       'git add .'
+                       git add .
                        git commit -m "update tag image by Jenkins"
                        git push -u origin main
                     """
