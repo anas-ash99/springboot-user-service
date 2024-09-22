@@ -4,7 +4,7 @@ pipeline {
         // Replace these with your Docker Hub credentials and repository info
         DOCKER_HUB_CREDENTIALS = 'aba091eb-3857-489f-8115-2993e248f42c'
         IMAGE_TAG = 'aashraf756/springboot-user-service'
-        IMAGE_VERSION = "v1.2" // or use env.BUILD_NUMBER or another unique identifier
+        IMAGE_VERSION = "v1.3" // or use env.BUILD_NUMBER or another unique identifier
         MANIFEST_REPO = "https://github.com/anas-ash99/manifest"
         MANIFEST_REPO_NAME = "manifest"
         DEPLOYMENT_FILE_PATH = "overlys\\dev\\user-service"
@@ -16,7 +16,7 @@ pipeline {
         stage('Build App') {
             steps {
                 echo 'Building the app ...'
-                bat 'mvnw.cmd clean package'
+                bat 'mvn clean package'
             }
         }
 
