@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    @GetMapping("/hello")
+    @GetMapping("/home")
     private String welcomeScreen(){
         logger.info("A request has been made");
         return "Welcome to the user service";
