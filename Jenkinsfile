@@ -25,7 +25,7 @@ pipeline {
 
 
 
-                       git push https://${GIT_CREDENTIALS_USR}:${GIT_CREDENTIALS_PS}@github.com/${GIT_USERNAME}/${MANIFEST_REPO_NAME}.git
+                       git push https://${GIT_CREDENTIALS_USR}:${GIT_CREDENTIALS_PSW}@github.com/${GIT_USERNAME}/${MANIFEST_REPO_NAME}.git
                     """
                 }
             }
