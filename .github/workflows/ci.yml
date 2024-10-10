@@ -11,7 +11,8 @@ on:
         default: 'false'  # Default value can be set to 'false'
         type: boolean  # Use boolean for checkbox-like behavior
 env:
-  IMAGE_TAG: aashraf756/service-user-passgenius:v1.0.4
+  DOCKER_USERNAME: aashraf756
+  DOCKER_REPO: service-user-passgenius
   DEPLOYMENT_FILE_PATH: overlays/dev/user
   MAVEN_SETTINGS_FILE_ID: df11f9a7-ff71-4d6b-80d7-f390bc7e79d6
   
@@ -30,11 +31,16 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean package
-
+    - name: Get Branch Name
+      id: get_branch_name
+      run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    - name: Set Image Tag
+      id: set_image_tag
+      run: echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha::0:8 }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     - name: Build Docker image
-      if: github.event.inputs.build_image == 'true'
+      if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
       run: docker build . -t $IMAGE_TAG
     - name: Push Docker image
       if: github.event.inputs.build_image == 'true'
