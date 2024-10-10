@@ -36,12 +36,18 @@ jobs:
     #   id: get_branch_name
     #   run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
       # set image tag
-    - name: Set Image Tag
-      id: set_image_tag
+    - name: Set Short SHA
+      id: set_short_sha
       run: |
         sha_short="${GITHUB_SHA:0:8}"
         echo "sha_short=$sha_short" >> "$GITHUB_ENV"
         echo "The short SHA is ${{ env.sha_short }}"
+    - name: Set Image Tag
+      id: set_image_tag
+      run: |
+        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.sha_short }}-${{ github.ref_name }}" >> "$GITHUB_ENV"
+    - name: Log Image Tag
+      run: echo "The image tag is:$IMAGE_TAG"
    
     # - name: Build Docker Image
     #   if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
