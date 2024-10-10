@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # Copy the packaged jar file into the container
-COPY target/user-service-0.0.1-SNAPSHOT.jar app.jar
+COPY target/* app.jar
 
 # Expose the port the application runs on
 EXPOSE 8080
