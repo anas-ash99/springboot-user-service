@@ -22,25 +22,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
+    # - name: Set up JDK 21
+    #   uses: actions/setup-java@v4
+    #   with:
+    #     java-version: '21'
+    #     distribution: 'temurin'
+    #     cache: maven
     
-    - name: Build with Maven
-      run: mvn clean package
+    # - name: Build with Maven
+    #   run: mvn clean package
     
-    - name: Get Branch Name
-      id: get_branch_name
-      run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    # - name: Get Branch Name
+    #   id: get_branch_name
+    #   run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
       # set image tag
     - name: Set Image Tag
       id: set_image_tag
       run: |
        echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-       echo "The short SHA is $sha_short"
+       echo "The short SHA is ${{env.sha_short}}"
    
     # - name: Build Docker Image
     #   if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
