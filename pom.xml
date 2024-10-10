@@ -47,10 +47,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-				 <configuration>
-					 <finalName>user-service</finalName>
-				 </configuration>
 			</plugin>
 		</plugins>
 	</build>
