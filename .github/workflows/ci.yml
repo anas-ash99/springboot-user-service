@@ -40,7 +40,7 @@ jobs:
       id: set_image_tag
       run: |
         echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-        echo "The short SHA is ${{env.sha_short}}"
+        echo "The short SHA is ${{ env.sha_short }}"
    
     # - name: Build Docker Image
     #   if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
