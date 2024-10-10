@@ -12,9 +12,8 @@ on:
         type: boolean  # Use boolean for checkbox-like behavior
 env:
   DOCKER_USERNAME: aashraf756
-  DOCKER_REPO: service-user-passgenius
+  DOCKER_REPO: springboot-user-service
   DEPLOYMENT_FILE_PATH: overlays/dev/user
-  MAVEN_SETTINGS_FILE_ID: df11f9a7-ff71-4d6b-80d7-f390bc7e79d6
   
 jobs:
   build:
@@ -29,19 +28,29 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+    
     - name: Build with Maven
       run: mvn clean package
+    
     - name: Get Branch Name
       id: get_branch_name
       run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      # set image tag
     - name: Set Image Tag
       id: set_image_tag
-      run: echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
-    - name: Build and Push Docker Image
+      run: |
+       echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+       echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.sha_short }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
+   
+    - name: Build Docker Image
       if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
       run: |
         # Build the Docker image
         docker build . -t $IMAGE_TAG
+   
+    - name: Push Docker Image
+      if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
+      run: |
         # Log in to Docker Hub
         echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
         # Push the Docker image
