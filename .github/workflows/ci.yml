@@ -2,7 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - main
+      - feature/* 
   workflow_dispatch:  # Allows manual triggering of the workflow
     inputs:
       build_image:
@@ -35,15 +37,14 @@ jobs:
     - name: Get Branch Name
       id: get_branch_name
       run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
-    # set image tag
+  
     - name: Set Image Tag
       id: set_image_tag
+      if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
       run: |
         hash_short="${GITHUB_SHA:0:8}"
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
         
-  
-   
     - name: Build Docker Image
       if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
       run: |
