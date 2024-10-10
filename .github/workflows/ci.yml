@@ -40,19 +40,19 @@ jobs:
       id: set_image_tag
       run: |
        echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-       echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.sha_short }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
+       echo "The short SHA is $sha_short"
    
-    - name: Build Docker Image
-      if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
-      run: |
-        # Build the Docker image
-        docker build . -t $IMAGE_TAG
+    # - name: Build Docker Image
+    #   if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
+    #   run: |
+    #     # Build the Docker image
+    #     docker build . -t $IMAGE_TAG
    
-    - name: Push Docker Image
-      if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
-      run: |
-        # Log in to Docker Hub
-        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-        # Push the Docker image
-        docker push $IMAGE_TAG
+    # - name: Push Docker Image
+    #   if: github.event.inputs.build_image == 'true' || env.BRANCH_NAME == 'main'
+    #   run: |
+    #     # Log in to Docker Hub
+    #     echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+    #     # Push the Docker image
+    #     docker push $IMAGE_TAG
     
