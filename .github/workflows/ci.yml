@@ -1,20 +1,17 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Java CI with Maven
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:  # Allows manual triggering of the workflow
+    inputs:
+      build_image:
+        description: 'Check this to build and push the Docker image'
+        required: true
+        default: 'false'  # Default value can be set to 'false'
+        type: boolean  # Use boolean for checkbox-like behavior
 env:
-  IMAGE_TAG: aashraf756/service-user-passgenius:v2.0.0
+  IMAGE_TAG: aashraf756/service-user-passgenius:${{ github.sha.substring(0, 8) }} 
   DEPLOYMENT_FILE_PATH: overlays/dev/user
   MAVEN_SETTINGS_FILE_ID: df11f9a7-ff71-4d6b-80d7-f390bc7e79d6
   
@@ -37,7 +34,9 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     - name: Build Docker image
+      if: github.event.inputs.build_image == 'true'
       run: docker build . -t $IMAGE_TAG
     - name: Push Docker image
+      if: github.event.inputs.build_image == 'true'
       run: docker push $IMAGE_TAG
 
