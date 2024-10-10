@@ -45,8 +45,10 @@ jobs:
     - name: Set Image Tag
       id: set_image_tag
       run: |
-        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.sha_short }}" >> "$GITHUB_ENV"
-        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.sha_short }}" >> "$GITHUB_ENV"
+        sha_short="${GITHUB_SHA:0:8}"
+        echo "sha_short=$sha_short" >> "$GITHUB_ENV"
+        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$sha_short" >> "$GITHUB_ENV"
+        
   
    
     - name: Build Docker Image
