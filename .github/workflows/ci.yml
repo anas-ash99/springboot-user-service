@@ -13,11 +13,15 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+env:
+  IMAGE_TAG: aashraf756/service-user-passgenius
+  DEPLOYMENT_FILE_PATH: overlays/dev/user
+  MAVEN_SETTINGS_FILE_ID: df11f9a7-ff71-4d6b-80d7-f390bc7e79d6
+  
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -28,5 +32,5 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean package
 
