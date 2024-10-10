@@ -11,7 +11,7 @@ on:
         default: 'false'  # Default value can be set to 'false'
         type: boolean  # Use boolean for checkbox-like behavior
 env:
-  IMAGE_TAG: aashraf756/service-user-passgenius:${{ github.sha.substring(0, 8) }} 
+  IMAGE_TAG: aashraf756/service-user-passgenius:v1.0.4
   DEPLOYMENT_FILE_PATH: overlays/dev/user
   MAVEN_SETTINGS_FILE_ID: df11f9a7-ff71-4d6b-80d7-f390bc7e79d6
   
