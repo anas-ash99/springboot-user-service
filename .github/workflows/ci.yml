@@ -35,19 +35,12 @@ jobs:
     - name: Get Branch Name
       id: get_branch_name
       run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
-    - name: Set Short SHA
-      id: set_short_sha
-      run: |
-        # Extract the first 8 characters from the GITHUB_SHA
-        sha_short="${GITHUB_SHA:0:8}"
-        echo "sha_short=$sha_short" >> "$GITHUB_ENV"
     # set image tag
     - name: Set Image Tag
       id: set_image_tag
       run: |
-        sha_short="${GITHUB_SHA:0:8}"
-        echo "sha_short=$sha_short" >> "$GITHUB_ENV"
-        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$sha_short" >> "$GITHUB_ENV"
+        hash_short="${GITHUB_SHA:0:8}"
+        echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
         
   
    
