@@ -36,7 +36,7 @@ jobs:
       run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
     - name: Set Image Tag
       id: set_image_tag
-      run: echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha::0:8 }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha }}-${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     - name: Build Docker image
