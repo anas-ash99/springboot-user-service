@@ -37,7 +37,7 @@ jobs:
           echo 'Updating manifest ...'
           git clone ${{ env.MANIFEST_REPO_URL }} manifest-repo
           cd manifest-repo
-          sed -i "s|image: .*|image: ${env.IMAGE_TAG}|" "${env.DEPLOYMENT_FILE_PATH}"
+          sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           git push origin ${{ env.MANIFEST_BRANCH_NAME }}
