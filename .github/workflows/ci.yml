@@ -26,16 +26,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set Image Tag
       if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
       run: |
         hash_short="${GITHUB_SHA:0:8}"
         echo "hash_short=$hash_short" >> "$GITHUB_ENV"
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
+
+    - name: Checkout manifest repo
+      uses: actions/checkout@v2
+      with:
+        repository: anas-ash99/deployment-manifest-passgenius
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: manifest-repo
     - name: Update Kubernetes Manifest
       run: |
           echo 'Updating manifest ...'
-          git clone ${{ env.MANIFEST_REPO_URL }} manifest-repo
           cd manifest-repo
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           echo 'Displaying the content of the deployment.yaml...'
