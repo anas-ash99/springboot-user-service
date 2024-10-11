@@ -15,7 +15,7 @@ on:
 env:
   DOCKER_USERNAME: aashraf756
   DOCKER_REPO: springboot-user-service
-  DEPLOYMENT_FILE_PATH: overlays/dev/user
+  DEPLOYMENT_FILE_PATH: overlays/dev/user/deployment.yaml
   MANIFEST_REPO_URL: https://github.com/anas-ash99/deployment-manifest-passgenius.git
   MANIFEST_BRANCH_NAME: main
   
@@ -37,7 +37,7 @@ jobs:
           echo 'Updating manifest ...'
           git clone ${{ env.MANIFEST_REPO_URL }} manifest-repo
           cd manifest-repo
-          sed -i "s|${{ env.IMAGE_TAG }}|${{ env.IMAGE_TAG }}:${{ github.sha }}|g" ${{ env.DEPLOYMENT_FILE_PATH }}
+          sed -i "s|image: .*|image: ${env.IMAGE_TAG}|" "${env.DEPLOYMENT_FILE_PATH}"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           git push origin ${{ env.MANIFEST_BRANCH_NAME }}
