@@ -50,7 +50,7 @@ jobs:
           echo 'Displaying the content of the deployment.yaml...'
           cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
           git config --local user.email "anas.ash099@gmail.com"
-          git config --local user.name "Anas Ashraf"
+          git config --local user.name "anas-ash99"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
  
