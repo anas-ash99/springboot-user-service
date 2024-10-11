@@ -47,7 +47,7 @@ jobs:
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           # git push git@github.com:anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
+          git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
  
     # - name: Push changes
     #   uses: ad-m/github-push-action@master
