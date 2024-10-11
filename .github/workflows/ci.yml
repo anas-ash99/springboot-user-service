@@ -19,6 +19,7 @@ env:
   MANIFEST_REPO_URL: https://github.com/anas-ash99/deployment-manifest-passgenius.git
   MANIFEST_BRANCH_NAME: main
   MANIFEST_REPO_NAME: deployment-manifest-passgenius
+  github_token: secrets.TOKEN_GITHUB
   
 jobs:
   build:
