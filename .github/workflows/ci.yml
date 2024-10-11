@@ -53,7 +53,7 @@ jobs:
           git config --local user.name "anas-ash99"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
-          git push https://anas-ash99:${{ secrets.GITHUB_TOKEN }}@github.com/anas-ash99}/deployment-manifest-passgenius.git
+          git push https://anas-ash99:${{ secrets.GITHUB_TOKEN }}@github.com/anas-ash99/deployment-manifest-passgenius.git
  
     # - name: Push changes
     #   uses: ad-m/github-push-action@master
