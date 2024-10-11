@@ -45,30 +45,23 @@ jobs:
         echo "hash_short=$hash_short" >> "$GITHUB_ENV"
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
 
-        
-    - name: Build Docker Image
-      if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
-      run: |
-        # Build the Docker image
-        docker build . -t $IMAGE_TAG
-   
-    - name: Push Docker Image
-      if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
-      run: |
-        # Log in to Docker Hub
-        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-        # Push the Docker image
-        docker push $IMAGE_TAG
-        
-    - name: Update Kubernetes Manifest
-      run: |
-          echo 'Updating manifest ...'
-          git clone ${{ env.MANIFEST_REPO_URL }}
-          cd ${{ env.MANIFEST_REPO_NAME }}
-          git checkout ${{ env.MANIFEST_BRANCH_NAME }}
-          sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          git add .
-          git commit -m "update image to version ${{ env.hash_short }}"
-          git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/${{ env.MANIFEST_REPO_NAME }}.git ${{ env.MANIFEST_BRANCH_NAME }}
+    - name: Use the Reusable Manifest Update Action
+      uses: anas-ash99/passgenius-github-actions@v1.0.0
+      with:
+        manifest_repo_url: ${{ env.MANIFEST_REPO_URL }}
+        manifest_repo_name: ${{ env.MANIFEST_REPO_NAME }}
+        manifest_branch_name: ${{ env.MANIFEST_BRANCH_NAME }}
+        image_tag: ${{ env.IMAGE_TAG }}
+        deployment_file_path: ${{ env.DEPLOYMENT_FILE_PATH }}
+    # - name: Update Kubernetes Manifest
+    #   run: |
+    #       echo 'Updating manifest ...'
+    #       git clone ${{ env.MANIFEST_REPO_URL }}
+    #       cd ${{ env.MANIFEST_REPO_NAME }}
+    #       git checkout ${{ env.MANIFEST_BRANCH_NAME }}
+    #       sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
+    #       git config user.name github-actions[bot]
+    #       git config user.email github-actions[bot]@users.noreply.github.com
+    #       git add .
+    #       git commit -m "update image to version ${{ env.hash_short }}"
+    #       git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/${{ env.MANIFEST_REPO_NAME }}.git ${{ env.MANIFEST_BRANCH_NAME }}
