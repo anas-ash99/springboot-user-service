@@ -53,16 +53,17 @@ jobs:
           git config --local user.name "anas-ash99"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
+          git push https://anas-ash99:${{ secrets.GITHUB_TOKEN }}@github.com/anas-ash99}/deployment-manifest-passgenius.git
  
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        repository: anas-ash99/deployment-manifest-passgenius
-        branch: main
-    - uses: fastify/github-action-merge-dependabot@v2.1.1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Push changes
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     repository: anas-ash99/deployment-manifest-passgenius
+    #     branch: main
+    # - uses: fastify/github-action-merge-dependabot@v2.1.1
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
     # - name: Create local changes
     #   run: |
     #      cd manifest-repo
