@@ -27,8 +27,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+        token: ${{ secrets.PAT_TOKEN }}
     - name: Set Image Tag
       if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
       run: |
@@ -53,14 +54,14 @@ jobs:
           git config user.email github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
-          git push https://anas-ash99:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git
+          # git push https://anas-ash99:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git
  
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     repository: anas-ash99/deployment-manifest-passgenius
-    #     branch: main
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.PAT_TOKEN }}
+        repository: anas-ash99/deployment-manifest-passgenius
+        force: true
     # - uses: fastify/github-action-merge-dependabot@v2.1.1
     #   with:
     #     github-token: ${{ secrets.GITHUB_TOKEN }}
