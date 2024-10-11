@@ -62,6 +62,7 @@ jobs:
       run: |
          cd manifest-repo
          sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
+         git add .
     - name: Commit files
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
