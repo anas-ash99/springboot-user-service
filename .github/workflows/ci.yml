@@ -26,7 +26,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
     - name: Set Image Tag
       if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
       run: |
@@ -40,21 +42,38 @@ jobs:
         repository: anas-ash99/deployment-manifest-passgenius
         token: ${{ secrets.GITHUB_TOKEN }}
         path: manifest-repo
-    - name: Update Kubernetes Manifest
-      run: |
-          echo 'Updating manifest ...'
-          cd manifest-repo
-          sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
-          echo 'Displaying the content of the deployment.yaml...'
-          cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
-          git config --global user.email "anas.ash099@github.com"
-          git config --global user.name "Anas Ashraf"
-          git add .
-          git commit -m "update image to version ${{ env.hash_short }}"
-          git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
+    # - name: Update Kubernetes Manifest
+    #   run: |
+    #       echo 'Updating manifest ...'
+    #       cd manifest-repo
+    #       sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
+    #       echo 'Displaying the content of the deployment.yaml...'
+    #       cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
+    #       git config --global user.email "anas.ash099@github.com"
+    #       git config --global user.name "Anas Ashraf"
+    #       git add .
+    #       git commit -m "update image to version ${{ env.hash_short }}"
+    #       git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
 
-          cd ..
-          rm -rf manifest-repo  # Clean up the cloned rep
+    #       cd ..
+    #       rm -rf manifest-repo  # Clean up the cloned rep
+
+    - name: Create local changes
+      run: |
+         cd manifest-repo
+         sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
+    - name: Commit files
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -a -m "Add changes"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+
+        
     # - name: Set up JDK 21
     #   uses: actions/setup-java@v4
     #   with:
