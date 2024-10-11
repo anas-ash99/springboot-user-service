@@ -49,8 +49,8 @@ jobs:
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           echo 'Displaying the content of the deployment.yaml...'
           cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
-          git config --local user.email "anas.ash099@gmail.com"
-          git config --local user.name "anas-ash99"
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           git push https://anas-ash99:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git
