@@ -28,6 +28,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Build with Maven
+      run: mvn clean package
+  
     - name: Set Image Tag
       if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
       run: |
@@ -35,6 +45,21 @@ jobs:
         echo "hash_short=$hash_short" >> "$GITHUB_ENV"
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
 
+        
+    - name: Build Docker Image
+      if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
+      run: |
+        # Build the Docker image
+        docker build . -t $IMAGE_TAG
+   
+    - name: Push Docker Image
+      if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
+      run: |
+        # Log in to Docker Hub
+        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        # Push the Docker image
+        docker push $IMAGE_TAG
+        
     - name: Update Kubernetes Manifest
       run: |
           echo 'Updating manifest ...'
@@ -46,47 +71,3 @@ jobs:
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/${{ env.MANIFEST_REPO_NAME }}.git ${{ env.MANIFEST_BRANCH_NAME }}
- 
-    # - name: Create local changes
-    #   run: |
-    #      cd manifest-repo
-    #      sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
-    #      git add .
-    # - name: Commit files
-    #   run: |
-    #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    #     git config --local user.name "github-actions[bot]"
-    #     git commit -a -m "Add changes"
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     branch: ${{ github.ref }}
-
-        
-    # - name: Set up JDK 21
-    #   uses: actions/setup-java@v4
-    #   with:
-    #     java-version: '21'
-    #     distribution: 'temurin'
-    #     cache: maven
-    
-    # - name: Build with Maven
-    #   run: mvn clean package
-  
-  
-        
-    # - name: Build Docker Image
-    #   if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
-    #   run: |
-    #     # Build the Docker image
-    #     docker build . -t $IMAGE_TAG
-   
-    # - name: Push Docker Image
-    #   if: github.event.inputs.build_image == 'true' || github.ref_name == 'main'
-    #   run: |
-    #     # Log in to Docker Hub
-    #     echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-    #     # Push the Docker image
-    #     docker push $IMAGE_TAG
-    
