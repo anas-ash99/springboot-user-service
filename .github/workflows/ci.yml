@@ -44,7 +44,7 @@ jobs:
     - name: Update Kubernetes Manifest
       run: |
           echo 'Updating manifest ...'
-          git clone ${{  MANIFEST_REPO_URL }} manifest-repo
+          git clone https://github.com/anas-ash99/deployment-manifest-passgenius.git manifest-repo
           cd manifest-repo
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           echo 'Displaying the content of the deployment.yaml...'
