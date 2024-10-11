@@ -38,6 +38,8 @@ jobs:
           git clone ${{ env.MANIFEST_REPO_URL }} manifest-repo
           cd manifest-repo
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
+          echo 'Displaying the content of the deployment.yaml...'
+          cat path/to/your/deployment.yaml # Specify the correct path
           git config --global user.email "anas.ash099@github.com"
           git config --global user.name "Anas Ashraf"
           git add .
