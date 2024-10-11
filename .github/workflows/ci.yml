@@ -49,7 +49,7 @@ jobs:
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           echo 'Displaying the content of the deployment.yaml...'
           cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
-          git config --local user.email "asnas.ash099@gmail.com"
+          git config --local user.email "anas.ash099@gmail.com"
           git config --local user.name "Anas Ashraf"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
