@@ -46,7 +46,7 @@ jobs:
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
 
     - name: Use the Reusable Manifest Update Action
-      uses: anas-ash99/passgenius-github-actions@v1.0.0
+      uses: anas-ash99/passgenius-github-actions@v1.0.1
       with:
         manifest_repo_url: ${{ env.MANIFEST_REPO_URL }}
         manifest_repo_name: ${{ env.MANIFEST_REPO_NAME }}
