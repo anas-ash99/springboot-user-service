@@ -54,6 +54,7 @@ jobs:
         manifest_branch_name: ${{ env.MANIFEST_BRANCH_NAME }}
         image_tag: ${{ env.IMAGE_TAG }}
         deployment_file_path: ${{ env.DEPLOYMENT_FILE_PATH }}
+        github_token: ${{ secrets.TOKEN_GITHUB }}
     # - name: Update Kubernetes Manifest
     #   run: |
     #       echo 'Updating manifest ...'
