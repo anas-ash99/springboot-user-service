@@ -65,6 +65,7 @@ jobs:
           echo 'Updating manifest ...'
           git clone ${{ env.MANIFEST_REPO_URL }}
           cd ${{ env.MANIFEST_REPO_NAME }}
+          git checkout ${{ env.MANIFEST_BRANCH_NAME }}
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
