@@ -18,6 +18,7 @@ env:
   DEPLOYMENT_FILE_PATH: overlays/dev/user/deployment.yaml
   MANIFEST_REPO_URL: https://github.com/anas-ash99/deployment-manifest-passgenius.git
   MANIFEST_BRANCH_NAME: main
+  MANIFEST_REPO_NAME: deployment-manifest-passgenius
   
 jobs:
   build:
@@ -37,27 +38,15 @@ jobs:
     - name: Update Kubernetes Manifest
       run: |
           echo 'Updating manifest ...'
-          git clone https://github.com/anas-ash99/deployment-manifest-passgenius.git manifest-repo
-          cd manifest-repo
+          git clone ${{ env.MANIFEST_REPO_URL }}
+          cd ${{ env.MANIFEST_REPO_NAME }}
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
-          echo 'Displaying the content of the deployment.yaml...'
-          cat "${DEPLOYMENT_FILE_PATH}" # Specify the correct path
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
-          # git push git@github.com:anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
-          git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
+          git push https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/${{ env.MANIFEST_REPO_NAME }}.git ${{ env.MANIFEST_BRANCH_NAME }}
  
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ env.TOKEN_GITHUB }}
-    #     repository: anas-ash99/deployment-manifest-passgenius
-    #     force: true
-    # - uses: fastify/github-action-merge-dependabot@v2.1.1
-    #   with:
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
     # - name: Create local changes
     #   run: |
     #      cd manifest-repo
