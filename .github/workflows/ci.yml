@@ -39,7 +39,7 @@ jobs:
           cd manifest-repo
           sed -i "s|image: .*|image: ${IMAGE_TAG}|" "${DEPLOYMENT_FILE_PATH}"
           git config --global user.email "anas.ash099@github.com"
-          git config --global user.name "GitHub Action"
+          git config --global user.name "Anas Ashraf"
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
           git push origin ${{ env.MANIFEST_BRANCH_NAME }}
