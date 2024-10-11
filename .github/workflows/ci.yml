@@ -34,13 +34,6 @@ jobs:
         echo "hash_short=$hash_short" >> "$GITHUB_ENV"
         echo "IMAGE_TAG=${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:$hash_short" >> "$GITHUB_ENV"
 
-    # - name: Checkout manifest repo
-    #   uses: actions/checkout@v2
-    #   with:
-    #     repository: anas-ash99/deployment-manifest-passgenius
-    #     fetch-depth: 0
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     path: manifest-repo
     - name: Update Kubernetes Manifest
       run: |
           echo 'Updating manifest ...'
@@ -53,7 +46,8 @@ jobs:
           git config user.email github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "update image to version ${{ env.hash_short }}"
-          git push https://anas-ash99:${{ secrets.TOKEN_GITHUB }}@github.com/anas-ash99/deployment-manifest-passgenius.git
+          git push git@github.com:anas-ash99/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
+          # git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/deployment-manifest-passgenius.git ${{ env.MANIFEST_BRANCH_NAME }}
  
     # - name: Push changes
     #   uses: ad-m/github-push-action@master
